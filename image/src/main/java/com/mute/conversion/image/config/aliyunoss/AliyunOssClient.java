@@ -14,9 +14,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AliyunOSSClient {
+/**
+ * @author H
+ */
+public class AliyunOssClient {
 
-    private static final Logger logger = LoggerFactory.getLogger(AliyunOSSClient.class);
+    private static final Logger logger = LoggerFactory.getLogger(AliyunOssClient.class);
 
     private String endpoint;
     private String accessKeyId;
@@ -25,10 +28,10 @@ public class AliyunOSSClient {
     private String defaultFolder;
     private OSSClient ossClient;
 
-    private AliyunOSSClient() {
+    private AliyunOssClient() {
     }
 
-    public AliyunOSSClient(String endpoint, String accessKeyId, String accessKeySecret, String backetName, String defaultFolder) {
+    public AliyunOssClient(String endpoint, String accessKeyId, String accessKeySecret, String backetName, String defaultFolder) {
         this.endpoint = endpoint;
         this.accessKeyId = accessKeyId;
         this.accessKeySecret = accessKeySecret;

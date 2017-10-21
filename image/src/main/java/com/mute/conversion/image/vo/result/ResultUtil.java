@@ -3,7 +3,10 @@ package com.mute.conversion.image.vo.result;
 
 /**
  * Created by H on 2017/4/19.
+ *
+ * @author H
  */
+
 public class ResultUtil {
     public static Result success(String msg, Object object) {
         Result result = new Result();

@@ -1,12 +1,10 @@
 package com.mute.conversion.image.controller;
 
-import com.mute.conversion.image.config.aliyunoss.AliyunOSSClient;
+import com.mute.conversion.image.config.aliyunoss.AliyunOssClient;
 import com.mute.conversion.image.config.aliyunoss.service.imageconversion.ImageConversionService;
 import com.mute.conversion.image.vo.result.Result;
 import com.mute.conversion.image.vo.result.ResultUtil;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +24,7 @@ public class ImageConversionController {
     private String defaultFolder;
 
     @Autowired
-    private AliyunOSSClient aliyunOSSClient;
+    private AliyunOssClient aliyunOSSClient;
 
     @Autowired
     private ImageConversionService imageConversionService;

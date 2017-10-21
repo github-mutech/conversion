@@ -2,6 +2,8 @@ package com.mute.conversion.image.vo.result;
 
 /**
  * Created by H on 2017/4/19.
+ *
+ * @author H
  */
 public class Result<T> {
 

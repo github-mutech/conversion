@@ -3,6 +3,8 @@ package com.mute.conversion.image.vo.result;
 /**
  * Created by H on 2017/4/19.
  * 错误信息枚举
+ *
+ * @author H
  */
 public enum ResultEnum {
     /**

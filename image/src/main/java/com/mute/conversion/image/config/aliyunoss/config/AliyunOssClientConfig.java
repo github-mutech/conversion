@@ -1,12 +1,15 @@
 package com.mute.conversion.image.config.aliyunoss.config;
 
-import com.mute.conversion.image.config.aliyunoss.AliyunOSSClient;
+import com.mute.conversion.image.config.aliyunoss.AliyunOssClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * @author H
+ */
 @Configuration
-public class AliyunOSSClientConfig {
+public class AliyunOssClientConfig {
 
     @Value("${aliyun.OSS.endpoint}")
     private String endpoint;
@@ -24,7 +27,7 @@ public class AliyunOSSClientConfig {
     private String defaultFolder;
 
     @Bean("AliyunOSSClient")
-    public AliyunOSSClient aliyunOSSClient() {
-        return new AliyunOSSClient(endpoint, accessKeyId, accessKeySecret, backetName, defaultFolder);
+    public AliyunOssClient aliyunOSSClient() {
+        return new AliyunOssClient(endpoint, accessKeyId, accessKeySecret, backetName, defaultFolder);
     }
 }

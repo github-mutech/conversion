@@ -6,6 +6,9 @@ import javax.net.ssl.*;
 import java.io.IOException;
 import java.util.Map;
 
+/**
+ * @author H
+ */
 public class OkHttpUtil {
     private OkHttpUtil() {
     }
@@ -54,7 +57,7 @@ public class OkHttpUtil {
             final SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
 
             OkHttpClient.Builder builder = new OkHttpClient.Builder();
-            builder.sslSocketFactory(sslSocketFactory,null);
+            builder.sslSocketFactory(sslSocketFactory, null);
             builder.hostnameVerifier(new HostnameVerifier() {
                 @Override
                 public boolean verify(String hostname, SSLSession session) {
