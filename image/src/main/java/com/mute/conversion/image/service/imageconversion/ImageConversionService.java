@@ -1,4 +1,4 @@
-package com.mute.conversion.image.config.aliyunoss.service.imageconversion;
+package com.mute.conversion.image.service.imageconversion;
 
 /**
  * @author H

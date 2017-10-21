@@ -1,7 +1,7 @@
 package com.mute.conversion.image.controller;
 
 import com.mute.conversion.image.config.aliyunoss.AliyunOssClient;
-import com.mute.conversion.image.config.aliyunoss.service.imageconversion.ImageConversionService;
+import com.mute.conversion.image.service.imageconversion.ImageConversionService;
 import com.mute.conversion.image.vo.result.Result;
 import com.mute.conversion.image.vo.result.ResultUtil;
 import org.apache.commons.lang3.StringUtils;

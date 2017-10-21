@@ -1,6 +1,6 @@
-package com.mute.conversion.image.config.aliyunoss.service.imageconversion.impl;
+package com.mute.conversion.image.service.imageconversion.impl;
 
-import com.mute.conversion.image.config.aliyunoss.service.imageconversion.ImageConversionService;
+import com.mute.conversion.image.service.imageconversion.ImageConversionService;
 import com.mute.conversion.image.util.OkHttpUtil;
 import okhttp3.Response;
 import org.slf4j.Logger;
