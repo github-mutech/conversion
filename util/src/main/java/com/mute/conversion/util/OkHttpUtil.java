@@ -182,7 +182,7 @@ public class OkHttpUtil {
      * @param params 请求参数
      * @return 完整的url
      */
-    private String getIntactUrl(String url, Map<String, String> params) {
+    public String getIntactUrl(String url, Map<String, String> params) {
         String intactUrl = url;
         if (!(params == null || params.isEmpty())) {
             String paramsString = "?";
