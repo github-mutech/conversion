@@ -1,10 +1,20 @@
 package com.mute.conversion.image.service.imageconversion;
 
+import org.springframework.web.multipart.MultipartFile;
+
 /**
  * @author H
- * @date 2017/10/21
  */
 public interface ImageConversionService {
+
+    /**
+     * getImageUrl
+     *
+     * @param file file
+     * @return String
+     */
+    String getImageUrl(MultipartFile file);
+
     /**
      * getShowAndHideImageUrl
      *

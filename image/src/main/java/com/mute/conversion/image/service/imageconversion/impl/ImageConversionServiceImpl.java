@@ -1,18 +1,22 @@
 package com.mute.conversion.image.service.imageconversion.impl;
 
+import com.mute.conversion.image.config.aliyunoss.AliyunOssClient;
 import com.mute.conversion.image.service.imageconversion.ImageConversionService;
 import com.mute.conversion.image.util.OkHttpUtil;
 import okhttp3.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * @author H
@@ -22,6 +26,38 @@ import java.io.InputStream;
 public class ImageConversionServiceImpl implements ImageConversionService {
 
     private static final Logger logger = LoggerFactory.getLogger(ImageConversionServiceImpl.class);
+
+    @Value("${aliyun.OSS.defaultFolder}")
+    private String defaultFolder;
+
+    @Autowired
+    private AliyunOssClient aliyunOssClient;
+
+    @Override
+    public String getImageUrl(MultipartFile file) {
+        // 文件名
+        String fileName = file.getOriginalFilename();
+        // 文件大小
+        Long fileSize = file.getSize();
+        // 新文件名
+        String newFileName = String.valueOf(System.currentTimeMillis()).concat(fileName);
+        // 文件类型
+        String contentType = file.getContentType();
+        // 以输入流的形式上传文件
+        InputStream inputStream = null;
+        try {
+            inputStream = file.getInputStream();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (inputStream != null) {
+            Map<String, String> result = aliyunOssClient.uploadImage2OSS(fileName, fileSize, newFileName, contentType, inputStream, defaultFolder);
+            return result.get("imageUrl");
+        } else {
+            return null;
+        }
+
+    }
 
     @Override
     public String getShowAndHideImageUrl(String showImageUrl, String hideImageUrl) {
@@ -33,10 +69,25 @@ public class ImageConversionServiceImpl implements ImageConversionService {
             showImage = getPreprocessedImage(showImage, width, height, Color.white.getRGB());
             hideImage = getPreprocessedImage(hideImage, width, height, Color.black.getRGB());
             BufferedImage resultImage = getResultImage(showImage, hideImage, width, height);
+
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             try {
-                ImageIO.write(resultImage, "png", new File("D:/temp.png"));
+                ImageIO.write(resultImage, "png", byteArrayOutputStream);
             } catch (IOException e) {
                 e.printStackTrace();
+            }
+            InputStream inputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
+
+            if (inputStream != null) {
+
+                // 文件名
+                String fileName = "image" + UUID.randomUUID()+".png";
+                // 文件大小
+                Long fileSize = 100L;
+                Map<String, String> result = aliyunOssClient.uploadImage2OSS(fileName, fileSize, fileName, "image/png", inputStream, defaultFolder);
+                return result.get("imageUrl");
+            } else {
+                return null;
             }
         }
         return null;

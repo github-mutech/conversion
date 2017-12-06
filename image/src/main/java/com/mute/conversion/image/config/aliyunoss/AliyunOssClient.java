@@ -47,19 +47,21 @@ public class AliyunOssClient {
      * @param folder        模拟文件夹名 如"qj_nanjing/"
      * @return String 图片链接地址
      */
-    public Map<String, Object> uploadImage2OSS(MultipartFile multipartFile, String folder) {
-        Map<String, Object> result = new HashMap<>(2);
+    /**
+     * 上传图片至OSS
+     *
+     * @param fileName    fileName
+     * @param fileSize    fileSize
+     * @param newFileName newFileName
+     * @param contentType contentType
+     * @param inputStream inputStream
+     * @param folder      folder
+     * @return Map
+     */
+    public Map<String, String> uploadImage2OSS(String fileName, Long fileSize, String newFileName, String contentType, InputStream inputStream, String folder) {
+        Map<String, String> result = new HashMap<>(2);
         try {
-            // 文件名
-            String fileName = multipartFile.getOriginalFilename();
-            // 文件大小
-            Long fileSize = multipartFile.getSize();
-            // 新文件名
-            String newFileName = String.valueOf(System.currentTimeMillis()).concat(fileName);
-            // 文件类型
-            String contentType = multipartFile.getContentType();
-            // 以输入流的形式上传文件
-            InputStream inputStream = multipartFile.getInputStream();
+
             //创建上传Object的Metadata
             ObjectMetadata metadata = new ObjectMetadata();
             //上传的文件的长度

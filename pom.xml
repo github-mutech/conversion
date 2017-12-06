@@ -8,6 +8,8 @@
     <version>0.0.1-SNAPSHOT</version>
     <modules>
         <module>image</module>
+        <module>txt</module>
+        <module>util</module>
     </modules>
     <packaging>pom</packaging>
 
