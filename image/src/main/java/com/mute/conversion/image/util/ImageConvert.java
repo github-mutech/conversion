@@ -1,68 +1,21 @@
-package com.mute.conversion.image.service.imageconversion.impl;
+package com.mute.conversion.image.util;
 
-import com.mute.conversion.image.config.aliyunoss.AliyunOssClient;
-import com.mute.conversion.image.service.imageconversion.ImageConversionService;
-import com.mute.conversion.image.util.OkHttpUtil;
 import okhttp3.Response;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.*;
-import java.util.Map;
-import java.util.UUID;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Objects;
 
-/**
- * @author H
- * @date 2017/10/22
- */
-@Service
-public class ImageConversionServiceImpl implements ImageConversionService {
+public class ImageConvert {
 
-    private static final Logger logger = LoggerFactory.getLogger(ImageConversionServiceImpl.class);
+    public void getShowAndHideImageUrl() throws IOException {
 
-    @Value("${aliyun.OSS.defaultFolder}")
-    private String defaultFolder;
-
-    @Autowired
-    private AliyunOssClient aliyunOssClient;
-
-    @Override
-    public String getImageUrl(MultipartFile file) {
-        // 文件名
-        String fileName = file.getOriginalFilename();
-        // 文件大小
-        Long fileSize = file.getSize();
-        // 新文件名
-        String newFileName = String.valueOf(System.currentTimeMillis()).concat(fileName);
-        // 文件类型
-        String contentType = file.getContentType();
-        // 以输入流的形式上传文件
-        InputStream inputStream = null;
-        try {
-            inputStream = file.getInputStream();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        if (inputStream != null) {
-            Map<String, String> result = aliyunOssClient.uploadImage2OSS(fileName, fileSize, newFileName, contentType, inputStream, defaultFolder);
-            return result.get("imageUrl");
-        } else {
-            return null;
-        }
-
-    }
-
-    @Override
-    public String getShowAndHideImageUrl(String showImageUrl, String hideImageUrl) {
-        BufferedImage showImage = getBufferedImageByUrl(showImageUrl);
-        BufferedImage hideImage = getBufferedImageByUrl(hideImageUrl);
+        BufferedImage showImage = ImageIO.read(new File("E:\\code\\conversion\\image\\src\\main\\java\\com\\mute\\conversion\\image\\util\\微信图片_20200503234730.jpg"));
+        BufferedImage hideImage = ImageIO.read(new File("E:\\code\\conversion\\image\\src\\main\\java\\com\\mute\\conversion\\image\\util\\微信图片_20200503234737.jpg"));
         if (showImage != null && hideImage != null) {
             int width = Math.max(showImage.getWidth(), hideImage.getWidth());
             int height = Math.max(showImage.getHeight(), hideImage.getHeight());
@@ -70,28 +23,20 @@ public class ImageConversionServiceImpl implements ImageConversionService {
             hideImage = getPreprocessedImage(hideImage, width, height, Color.black.getRGB());
             BufferedImage resultImage = getResultImage(showImage, hideImage, width, height);
 
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            try {
-                ImageIO.write(resultImage, "png", byteArrayOutputStream);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            InputStream inputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
-
-            // 文件名
-            String fileName = "image" + UUID.randomUUID()+".png";
-            // 文件大小
-            Long fileSize = 100L;
-            Map<String, String> result = aliyunOssClient.uploadImage2OSS(fileName, fileSize, fileName, "image/png", inputStream, defaultFolder);
-            return result.get("imageUrl");
+            File outputfile = new File("E:\\code\\conversion\\image\\src\\main\\java\\com\\mute\\conversion\\image\\util\\微信图片_20200503234732.jpg");
+            ImageIO.write(resultImage, "png", outputfile);
         }
-        return null;
+    }
+
+    public static void main(String[] args) throws IOException {
+        ImageConvert imageConvert = new ImageConvert();
+        imageConvert.getShowAndHideImageUrl();
     }
 
     private BufferedImage getBufferedImageByUrl(String imageUrl) {
         BufferedImage bufferedImage = null;
         Response imageResponse = OkHttpUtil.getInstance().doGet(imageUrl);
-        InputStream inputStream = imageResponse.body().byteStream();
+        InputStream inputStream = Objects.requireNonNull(imageResponse.body()).byteStream();
         try {
             bufferedImage = ImageIO.read(inputStream);
         } catch (IOException e) {
@@ -176,4 +121,5 @@ public class ImageConversionServiceImpl implements ImageConversionService {
         newRgb += gray;
         return newRgb;
     }
+
 }
